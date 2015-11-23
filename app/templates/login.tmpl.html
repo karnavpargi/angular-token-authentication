@@ -1,0 +1,26 @@
+<div class="container">
+  <div class="col-xs-12 text-center">
+    <h1>Login View</h1>
+  </div>
+
+  <form name="loginForm" ng-controller="loginCtrl">
+    <!-- EMAIL -->
+    <div class="col-xs-12">
+      <div class="input-group">
+        <label>Email</label>
+        <input type="text" class="form-control"  ng-model="email">
+      </div>
+    </div>
+    <!-- PASSWORD -->
+    <div class="col-xs-12">
+      <div class="input-group">
+        <label>Password</label>
+        <input type="text" class="form-control" ng-model="password">
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary" ng-click="loginSubmit()">Login</button>
+  </form>
+
+
+  <button type="button" class="btn btn-primary" ui-sref="profile">Profile</button>
+</div>
