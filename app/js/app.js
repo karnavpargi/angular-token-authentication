@@ -1,7 +1,13 @@
 /**
  * Created by steve on 11/22/15.
  */
-var app = angular.module('myApp', ['ui.router', 'ngCookies', 'ngAnimate', 'toastr'])
+var app = angular.module('myApp', [
+  'ui.router',
+  'ngCookies',
+  'ngAnimate',
+  'toastr',
+  'angular-jwt',
+  'angular-storage'])
 
   .config(function(toastrConfig) {
     angular.extend(toastrConfig, {
@@ -9,7 +15,9 @@ var app = angular.module('myApp', ['ui.router', 'ngCookies', 'ngAnimate', 'toast
       closeButton: true,
       maxOpened: 5
     })
-  })
+  });
+
+
 
 
 //.run(function ($rootScope, $location){

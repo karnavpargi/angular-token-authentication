@@ -1,13 +1,20 @@
 /**
  * Created by steve on 11/22/15.
  */
-app.factory("authenticationSvc", ["$http", "$q", "$window", "$cookieStore", function ($http, $q, $window, $cookieStore) {
+app.constant('AUTH_EVENTS',{
+  loginSuccess: 'auth-login-success',
+  loginFailed: 'auth-login-failed',
+  logoutSuccess: 'auth-logout-success',
+  notAuthenticated: 'auth-not-authenticated'
+});
+
+app.factory("authService", ["$http", "$q", "$window", "store", function ($http, $q, $window, store) {
 
   var currentUser = {};
 
-  if($cookieStore.get('token')){
-    currentUser = User.get();
-  }
+
+
+  var TOKEN_NAME = 'token';
 
   function authenticate(email, password) {
     return $q(function(resolve, reject) {
@@ -23,13 +30,21 @@ app.factory("authenticationSvc", ["$http", "$q", "$window", "$cookieStore", func
         }
       })
       .then(function successCallback(response) {
-        $cookieStore.put('token', response.token);
+
+
+        // Store Token in Local Storage
+        store.set(TOKEN_NAME, response.data.token);
+
+        //Redirect to account page
+
+
+        console.log('Auth Service Token: ', response.data.token);
+        console.log('Auth Service Response: ', response);
+
         currentUser = response;
 
-        console.log("current user data: ", currentUser);
+        //console.log("current user data: ", currentUser);
         resolve(response);
-
-
 
 
       }, function errorCallback(error) {
@@ -39,6 +54,19 @@ app.factory("authenticationSvc", ["$http", "$q", "$window", "$cookieStore", func
   }
 
   return {
-    authenticate: authenticate
+    authenticate: authenticate,
+
+    logout: function() {
+      console.log('Logging Out');
+      store.remove(TOKEN_NAME);
+      $rootScope.$broadcast(AUTH_EVENTS.logoutSuccess);
+    }
   };
+
+
+
+
+
+
+
 }]);

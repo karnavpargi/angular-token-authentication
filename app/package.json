@@ -10,6 +10,7 @@
   "license": "ISC",
   "devDependencies": {
     "angular-jwt": "0.0.9",
+    "angular-storage": "0.0.13",
     "angular-toastr": "^1.6.0"
   }
 }
