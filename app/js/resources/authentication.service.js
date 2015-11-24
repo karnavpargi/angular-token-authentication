@@ -13,7 +13,7 @@ app.factory("authenticationSvc", ["$http", "$q", "$window", "$cookieStore", func
     return $q(function(resolve, reject) {
       $http({
         method: 'POST',
-        url: 'http://localhost:8080/api/authenticate',
+        url: 'http://localhost:8080/api/v1/sessions',
         headers: {
           'Content-Type': 'application/json'
         },
@@ -30,10 +30,10 @@ app.factory("authenticationSvc", ["$http", "$q", "$window", "$cookieStore", func
         resolve(response);
 
 
+
+
       }, function errorCallback(error) {
         reject(error);
-        // called asynchronously if an error occurs
-        // or server returns response with an error status.
       });
     })
   }

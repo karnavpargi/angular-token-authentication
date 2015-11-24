@@ -1,7 +1,7 @@
 /**
  * Created by steve on 11/22/15.
  */
-var app = angular.module('myApp', ['ui.router', 'ngCookies'])
+var app = angular.module('myApp', ['ui.router', 'ngCookies', 'ngAnimate', 'toastr'])
 
 
 
@@ -15,9 +15,6 @@ var app = angular.module('myApp', ['ui.router', 'ngCookies'])
 
         $location.path('/');
         event.preventDefault();
-
-
-
 
 
     }

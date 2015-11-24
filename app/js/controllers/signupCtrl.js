@@ -1,16 +1,16 @@
 /**
  * Created by steve on 11/22/15.
  */
-app.controller('signupCtrl', function ($scope, $http) {
+app.controller('signupCtrl', function ($scope, $http, authenticationSvc, toastr) {
+
+
+
 
   $scope.signupSubmit = function () {
     console.log('submitting sign up form');
-
-
-
     $http({
       method: 'POST',
-      url: 'http://localhost:8080/api/signup',
+      url: 'http://localhost:8080/api/v1/consumer',
       headers: {
         'Content-Type': 'application/json'
       },
@@ -19,15 +19,31 @@ app.controller('signupCtrl', function ($scope, $http) {
         password: $scope.password
       }
     }).then(function successCallback(response) {
-      // this callback will be called asynchronously
-      // when the response is available
-      console.log(response);
+      console.log('response: ' , response);
 
 
 
+      authenticationSvc.authenticate($scope.email, $scope.password)
+        .then(function(data, res) {
+          if(res.status === 500){
+            alert ('there was a problem');
+          }
+          console.log("Data", data);
+        }, function(err, res) {
+          if(res.status === 500){
+            alert ('there was a problem');
+          }
+          console.log("Error: ", err);
+        });
     }, function errorCallback(response) {
-      // called asynchronously if an error occurs
-      // or server returns response with an error status.
+      console.log('Response: ', response);
+      console.log ('Response Data Message: ', response.data.message);
+
+
+      toastr.error(response.data.message, 'Error');
+
+
+
     });
 
 
