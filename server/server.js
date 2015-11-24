@@ -49,6 +49,7 @@ app.post('/api/v1/consumer', function(req, res) {
     else{
       User.create(req.body, function(err, data) {
         //Then send back token
+        res.status(200).send({status:200, message: 'Accepted Signup', type:'internal'});
       });
     }
   });

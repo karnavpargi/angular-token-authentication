@@ -1,7 +1,7 @@
 /**
  * Created by steve on 11/22/15.
  */
-app.controller('signupCtrl', function ($scope, $http, authenticationSvc, toastr) {
+app.controller('signupCtrl', function ($scope, $http, $location, toastr) {
 
 
 
@@ -19,31 +19,19 @@ app.controller('signupCtrl', function ($scope, $http, authenticationSvc, toastr)
         password: $scope.password
       }
     }).then(function successCallback(response) {
-      console.log('response: ' , response);
 
 
+      //Success Message
+      toastr.success('Submission Successful!', 'Success');
 
-      authenticationSvc.authenticate($scope.email, $scope.password)
-        .then(function(data, res) {
-          if(res.status === 500){
-            alert ('there was a problem');
-          }
-          console.log("Data", data);
-        }, function(err, res) {
-          if(res.status === 500){
-            alert ('there was a problem');
-          }
-          console.log("Error: ", err);
-        });
+      // Redirect User to Login Page
+      $location.path('/login');
+
+
     }, function errorCallback(response) {
       console.log('Response: ', response);
       console.log ('Response Data Message: ', response.data.message);
-
-
       toastr.error(response.data.message, 'Error');
-
-
-
     });
 
 
