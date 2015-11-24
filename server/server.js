@@ -24,28 +24,45 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 mongoose.connect(configDB.url);
-app.set('superSecret', configDB.secret);
+app.set('secret', configDB.secret);
 
 app.all('/', function(req, res, next) {
   next();
 });
 
 // SIGNUP POST
-app.post('/api/create', function(req, res) {
-  // Handle the get for this route
-  console.log(User, req.body);
-  User.create(req.body, function(err, data) {
-    //console.log(data);
+app.post('/api/v1/consumer', function(req, res) {
+  console.log("Create Email: ", req.body.email);
+  console.log("Create Password: ", req.body.password);
+
+  User.find({
+    email: req.body.email
+  }, function (err,user){
+    var user = user[0];
+
+    if(user){
+      //res.status(500).send("User already exists");
+      res.status(500).send({status:500, message: 'Email is Taken', type:'internal'});
+      console.log('user already exists');
+    }
+
+    else{
+      User.create(req.body, function(err, data) {
+        //Then send back token
+      });
+    }
   });
+
+
+
+
+
 });
 
 // LOGIN POST
-app.post('/api/authenticate', function(req, res) {
-  // Handle the get for this route
+app.post('/api/v1/sessions', function(req, res) {
   //console.log(User, req.body);
-
   console.log("POST initiated: ");
-
   User.find({
     email: req.body.email
   }, function(err, user){
@@ -57,7 +74,7 @@ app.post('/api/authenticate', function(req, res) {
       res.status(500).send("User not found");
     } else {
       if(user.password == req.body.password) {
-        var token = jwt.sign(user, app.get('superSecret'),{
+        var token = jwt.sign(user, app.get('secret'),{
           expiresIn: 1440 // No idea how long this is look up
         });
         res.json({

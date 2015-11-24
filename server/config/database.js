@@ -4,5 +4,5 @@
 module.exports = {
 
   'secret': 'superSecret',
-  'url' : 'mongodb://<username>:<password>@ds051524.mongolab.com:#####/<db-name>'
+  'url' : 'mongodb://steve:password1@ds051524.mongolab.com:51524/post-to-db'
 };
