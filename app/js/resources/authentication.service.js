@@ -8,11 +8,9 @@ app.constant('AUTH_EVENTS',{
   notAuthenticated: 'auth-not-authenticated'
 });
 
-app.factory("authService", ["$http", "$q", "$window", "store", function ($http, $q, $window, store) {
+app.factory("authService", ["$http", "$q", "$window", "store", "$rootScope", "AUTH_EVENTS", function ($http, $q, $window, store, $rootScope, AUTH_EVENTS) {
 
   var currentUser = {};
-
-
 
   var TOKEN_NAME = 'token';
 
@@ -53,11 +51,13 @@ app.factory("authService", ["$http", "$q", "$window", "store", function ($http, 
     })
   }
 
+
+
   return {
     authenticate: authenticate,
 
     logout: function() {
-      console.log('Logging Out');
+      console.log('Logging Out from service return');
       store.remove(TOKEN_NAME);
       $rootScope.$broadcast(AUTH_EVENTS.logoutSuccess);
     }

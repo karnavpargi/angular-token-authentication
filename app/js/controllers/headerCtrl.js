@@ -3,4 +3,10 @@
  */
 app.controller('headerCtrl', function($scope, AUTH_EVENTS, authService){
 
+  $scope.logout = function(){
+    console.log('logging out from controller');
+    authService.logout();
+  }
+
+
 });
