@@ -8,10 +8,20 @@ app.constant('AUTH_EVENTS',{
   notAuthenticated: 'auth-not-authenticated'
 });
 
-app.factory("authService", ["$http", "$q", "$window", "store", "$rootScope", "AUTH_EVENTS", function ($http, $q, $window, store, $rootScope, AUTH_EVENTS) {
+app.factory("authService", [
+  "$http",
+  "$q",
+  "$window",
+  "store",
+  "$rootScope",
+  "AUTH_EVENTS",
+  "jwtHelper",
+  "$state",
+  "toastr",
+
+  function ($http, $q, $window, store, $rootScope, AUTH_EVENTS, jwtHelper, $state, toastr) {
 
   var currentUser = {};
-
   var TOKEN_NAME = 'token';
 
   function authenticate(email, password) {
@@ -60,6 +70,21 @@ app.factory("authService", ["$http", "$q", "$window", "store", "$rootScope", "AU
       console.log('Logging Out from service return');
       store.remove(TOKEN_NAME);
       $rootScope.$broadcast(AUTH_EVENTS.logoutSuccess);
+      // Return Home when logged out
+      $state.go('home');
+      //Success Message
+      toastr.info('Come back soon :)', 'Logged Out');
+
+    },
+
+    isAuthenticated: function() {
+      console.log('you must be logged in to view');
+      // Get rid of the token if it's already expired
+      if (store.get(TOKEN_NAME) &&
+        jwtHelper.isTokenExpired(store.get(TOKEN_NAME))) {
+        store.remove(TOKEN_NAME);
+      }
+      return store.get(TOKEN_NAME) !== null;
     }
   };
 

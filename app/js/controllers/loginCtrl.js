@@ -14,7 +14,7 @@ app.controller('loginCtrl', function ($scope, authService, $state) {
     authService.authenticate($scope.email, $scope.password)
       .then(function(data) {
         console.log('login success data', data);
-        $state.go('home');
+        $state.go('profile');
       }, function(err) {
         console.log('login error data', err);
       });

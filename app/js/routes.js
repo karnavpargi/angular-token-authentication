@@ -29,7 +29,9 @@ app.config(function($httpProvider, $stateProvider, $locationProvider, $urlRouter
     .state('profile', {
       url: '/profile',
       templateUrl: 'templates/profile.tmpl.html',
-      requiresLogin: true
+      data:{
+        requiresLogin: true
+      }
     });
 
 

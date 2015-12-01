@@ -15,6 +15,21 @@ var app = angular.module('myApp', [
       closeButton: true,
       maxOpened: 5
     })
+  })
+  .run(function($rootScope, $state, store, jwtHelper, authService, AUTH_EVENTS){
+
+    $rootScope.$on('$stateChangeStart', function(e, to) {
+      if (to.data && to.data.requiresLogin) {
+        if (!authService.isAuthenticated()) {
+          e.preventDefault();
+          $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated);
+
+          // Could also implement a login modal
+          $state.go('login');
+        }
+      }
+    });
+
   });
 
 
