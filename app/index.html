@@ -11,8 +11,6 @@
 <div ng-include src="'templates/header.tmpl.html'"></div>
 
 
-
-
 <div ui-view></div>
 
 
@@ -25,6 +23,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0-beta.2/angular-cookies.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.8/angular-animate.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.8/angular-resource.js"></script>
 <script src="node_modules/angular-toastr/dist/angular-toastr.tpls.js"></script>
 <script src="node_modules/angular-jwt/dist/angular-jwt.js"></script>
 <script src="node_modules/angular-storage/dist/angular-storage.js"></script>
@@ -32,10 +31,12 @@
 <script src="js/routes.js"></script>
 <!-- RESOURCES -->
 <script src="js/resources/authentication.service.js"></script>
+<script src="js/resources/user.factory.js"></script>
 <!-- CONTROLLERS -->
 <script src="js/controllers/indexCtrl.js"></script>
 <script src="js/controllers/signupCtrl.js"></script>
 <script src="js/controllers/loginCtrl.js"></script>
 <script src="js/controllers/headerCtrl.js"></script>
+<script src="js/controllers/accountCtrl.js"></script>
 </body>
 </html>

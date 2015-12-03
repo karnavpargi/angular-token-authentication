@@ -15,6 +15,7 @@ app.controller('signupCtrl', function ($scope, $http, $location, toastr) {
         'Content-Type': 'application/json'
       },
       data:{
+        username: $scope.email,
         email: $scope.email,
         password: $scope.password
       }

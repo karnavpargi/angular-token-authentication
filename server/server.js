@@ -32,6 +32,7 @@ app.all('/', function(req, res, next) {
 
 // SIGNUP POST
 app.post('/api/v1/consumer', function(req, res) {
+  console.log("Create Username: ", req.body.email);
   console.log("Create Email: ", req.body.email);
   console.log("Create Password: ", req.body.password);
 
@@ -75,9 +76,11 @@ app.post('/api/v1/sessions', function(req, res) {
       res.status(500).send("User not found");
     } else {
       if(user.password == req.body.password) {
-        var token = jwt.sign(user, app.get('secret'),{
-          expiresIn: 1440 // No idea how long this is look up
+        var token = jwt.sign({email: user.email, id: user._id}, app.get('secret'),{
+        //var token = jwt.sign(user, app.get('secret'),{
+          expiresIn: 1440 // Expressed in Seconds 1440/60 = 24 minutes
         });
+        console.log('server token info: ', token);
         res.json({
           success: true,
           message: 'Enjoy your token!',
@@ -121,7 +124,12 @@ app.get('/api/', function(req, res) {
   // Handle the get for this route
   User.findOne({}, function(err, data) {
     console.log(data);
-    res.json({status: 200});
+    res.json(
+      {
+        status: 200,
+        body: data
+      }
+    );
   });
 });
 

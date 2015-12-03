@@ -5,6 +5,7 @@ var app = angular.module('myApp', [
   'ui.router',
   'ngCookies',
   'ngAnimate',
+  'ngResource',
   'toastr',
   'angular-jwt',
   'angular-storage'])
@@ -13,17 +14,18 @@ var app = angular.module('myApp', [
     angular.extend(toastrConfig, {
       allowHtml: true,
       closeButton: true,
-      maxOpened: 5
+      maxOpened: 5,
+      preventDuplicates: true
     })
   })
-  .run(function($rootScope, $state, store, jwtHelper, authService, AUTH_EVENTS){
+  .run(function($rootScope, $state, store, jwtHelper, AuthService, AUTH_EVENTS, toastr){
 
     $rootScope.$on('$stateChangeStart', function(e, to) {
       if (to.data && to.data.requiresLogin) {
-        if (!authService.isAuthenticated()) {
+        if (!AuthService.isAuthenticated()) {
           e.preventDefault();
           $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated);
-
+          toastr.error('Please login or signup', 'No Access');
           // Could also implement a login modal
           $state.go('login');
         }

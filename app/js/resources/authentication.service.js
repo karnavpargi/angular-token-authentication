@@ -8,7 +8,7 @@ app.constant('AUTH_EVENTS',{
   notAuthenticated: 'auth-not-authenticated'
 });
 
-app.factory("authService", [
+app.factory("AuthService", [
   "$http",
   "$q",
   "$window",
@@ -18,7 +18,6 @@ app.factory("authService", [
   "jwtHelper",
   "$state",
   "toastr",
-
   function ($http, $q, $window, store, $rootScope, AUTH_EVENTS, jwtHelper, $state, toastr) {
 
   var currentUser = {};
@@ -33,23 +32,29 @@ app.factory("authService", [
           'Content-Type': 'application/json'
         },
         data:{
+          username: email,
           email: email,
           password: password
         }
       })
       .then(function successCallback(response) {
-
+        var responseToken = response.data.token;
 
         // Store Token in Local Storage
-        store.set(TOKEN_NAME, response.data.token);
+        store.set(TOKEN_NAME, responseToken);
 
         //Redirect to account page
 
 
-        console.log('Auth Service Token: ', response.data.token);
-        console.log('Auth Service Response: ', response);
+
+        //console.log('Auth Service Token: ', responseToken); //token payload
+        //console.log('Auth Service Response: ', response);   //server response
 
         currentUser = response;
+
+        var tokenPayload = jwtHelper.decodeToken(responseToken);
+        //console.log('this is the token name: ', TOKEN_NAME);
+        console.log('call from auth service token payload is: ',tokenPayload);
 
         //console.log("current user data: ", currentUser);
         resolve(response);
@@ -67,24 +72,34 @@ app.factory("authService", [
     authenticate: authenticate,
 
     logout: function() {
-      console.log('Logging Out from service return');
       store.remove(TOKEN_NAME);
       $rootScope.$broadcast(AUTH_EVENTS.logoutSuccess);
       // Return Home when logged out
       $state.go('home');
       //Success Message
-      toastr.info('Come back soon :)', 'Logged Out');
-
+      toastr.info('Logged Out');
+      //console.log('Log Out');
+      $rootScope.signedIn = false;
     },
 
     isAuthenticated: function() {
       console.log('you must be logged in to view');
       // Get rid of the token if it's already expired
-      if (store.get(TOKEN_NAME) &&
-        jwtHelper.isTokenExpired(store.get(TOKEN_NAME))) {
+      if (store.get(TOKEN_NAME) && jwtHelper.isTokenExpired(store.get(TOKEN_NAME))) {
         store.remove(TOKEN_NAME);
       }
+      //$rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
+
       return store.get(TOKEN_NAME) !== null;
+    },
+
+    currentUser: function(){
+      //console.log('I am the current user function!!!');
+      if (this.isAuthenticated()){
+        console.log('Yo man he is authenticated');
+        $rootScope.signedIn = true;
+        return jwtHelper.decodeToken(store.get(TOKEN_NAME));
+      }
     }
   };
 

@@ -4,16 +4,16 @@
 /**
  * Created by steve on 11/22/15.
  */
-app.controller('loginCtrl', function ($scope, authService, $state) {
+app.controller('loginCtrl', function ($scope, AuthService, $state) {
 
   //console.log(authenticationSvc);
 
 
   $scope.loginSubmit = function(){
     console.log('login form is being submitted');
-    authService.authenticate($scope.email, $scope.password)
+    AuthService.authenticate($scope.email, $scope.password)
       .then(function(data) {
-        console.log('login success data', data);
+        //console.log('login success data', data);
         $state.go('profile');
       }, function(err) {
         console.log('login error data', err);
