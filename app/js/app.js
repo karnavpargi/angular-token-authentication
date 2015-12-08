@@ -3,7 +3,6 @@
  */
 var app = angular.module('myApp', [
   'ui.router',
-  'ngCookies',
   'ngAnimate',
   'ngResource',
   'toastr',
