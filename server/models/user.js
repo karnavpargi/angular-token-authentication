@@ -13,7 +13,7 @@ var userSchema = new Schema({
   address1: String,
   address2: String,
   city: String,
-  zip_code: Integer,
+  zip_code: Number,
   state: String,
   password: String
 });
